@@ -127,7 +127,7 @@ svg{flex:none;display:block}
 .burn small{color:var(--ink-3);font-size:11.5px}
 .burn .bar{width:46px;height:4px;border-radius:2px;background:var(--hair);overflow:hidden}
 .burn .bar i{display:block;height:100%;width:var(--w);background:var(--lv)}
-.bpop{position:absolute;top:42px;right:0;z-index:20;width:390px;max-height:380px;overflow:auto;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);
+.bpop{position:absolute;top:42px;right:0;z-index:20;width:450px;max-height:480px;overflow:auto;overflow-x:hidden;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);
   border:.5px solid var(--hair-2);border-radius:10px;box-shadow:var(--float);padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 .bpop[hidden]{display:none}
 .bpop p{margin:2px 0 6px;line-height:1.4}
@@ -141,6 +141,22 @@ svg{flex:none;display:block}
 .spark b{position:absolute;left:0;right:0;border-top:1px dashed var(--ink-3);opacity:.5;pointer-events:none}
 .bpop table{width:100%;border-collapse:collapse}
 .bpop td{padding:5px 3px;border-top:.5px solid var(--hair);white-space:nowrap}
+.burn .lgb{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding-left:9px;border-left:.5px solid var(--hair);color:var(--ink-2)}
+.burn .lgb svg{width:14px;height:14px}
+.burn .lgb b{color:var(--ink)}
+.bpop .lgd{display:flex;align-items:center;gap:8px;padding:2px 2px 10px;margin-bottom:4px;border-bottom:.5px solid var(--hair);color:var(--ink-2)}
+.bpop .lgd b{font-size:20px;font-weight:600;color:var(--ink);font-family:var(--f-data)}
+.bpop .lgd span{font-size:12px}
+.bpop th{padding:4px 3px 3px;font-size:10.5px;font-weight:500;color:var(--ink-3);text-align:left}
+.bpop th.hr{text-align:right}
+.bpop .lgc{text-align:center}
+.bpop .lgp{display:inline-flex;align-items:center;gap:3px;padding:1px 7px 1px 5px;border-radius:999px;background:#E9F0FF;color:#2F5BD3;font-family:var(--f-data);font-size:11.5px}
+.bpop .lgp svg{width:11px;height:11px}
+.bpop .bc2{padding-left:10px!important;border-left:.5px solid var(--hair);font-weight:600}
+.bpop table.mt td{vertical-align:top;line-height:1.45}
+.bpop table.mt td:nth-child(4){white-space:normal;font-size:11.5px;min-width:84px}
+.bpop table.mt td:nth-child(2){color:var(--ink-3);font-family:var(--f-data)}
+.bpop .z{color:var(--ink-3)}
 .bpop td.hr{text-align:right;font-family:var(--f-data);color:var(--ink)}
 .bpop tr.z td{color:var(--ink-3)}
 .bpop a{color:var(--cobalt);text-decoration:none;font-family:var(--f-data)}
@@ -429,8 +445,8 @@ var T={
     empty:'Bu kolonda iş yok.',fold:'Kolonu daralt',unfold:'Kolonu aç',you:'sen',findPerson:'Kişi ara',
     err:'Jira okunamadı',more:'Diğer kişiler',rA:'Assignee',none:'boş',
     motion:'Hareket',motionOn:'Hareketi kapat',motionOff:'Hareketi aç',
-    burn:'Burndown Katkısı',burnTip:'Bugünkü burndown katkısı: kişinin bugün Remaining Estimate\'te yaptığı düşüş.',burnRe:'Remaining Estimate değişiklikleri',burnTr:'Geçişler, tahmin yorumuna göre (karşılaştırma için)',
-    burnNone:'Bugün kayıt yok.',burnErr:'Burndown okunamadı',burnUp:'tahmin artışı',burnSprint:'Sprint toplamı',burnSprintTip:function(n,x){return n+' iş günü × '+x+'h'},burnLoading:'Sprint hesaplanıyor…',burnLeft:function(x){return 'Done, '+x+' RE kaldı'},
+    logged:'Bugün loglanan',loggedNone:'Bugün worklog yok.',loggedErr:'Worklog okunamadı',burn:'Burndown Katkısı',burnTip:'Bugünkü burndown katkısı: kişinin bugün Remaining Estimate\'te yaptığı düşüş.',burnRe:'Remaining Estimate değişiklikleri',colTicket:'Ticket',colEst:'Tahmin',colBurn:'Katkı',colLog:'Worklog',burnTr:'Geçişler, tahmin yorumuna göre (karşılaştırma için)',
+    burnNone:'Bugün kayıt yok.',burnErr:'Burndown okunamadı',burnUp:'tahmin artışı',burnSprint:'Sprint toplamı',burnSprintTip:function(n,x){return n+' iş günü × '+x+'h'},burnLoading:'Sprint hesaplanıyor…',burnLeft:function(x){return 'Done, '+x+' kaldı'},
     reasons:{notFirst:'ilk geçiş değil',own:'kendi işi',notAssignee:'assignee değil',noEstimate:'tahmin yok'},
     other:'Diğer',chan:'Kanallar',chanTip:function(c){return c+' kolonları seçili kanalların işlerini gösterir.'},chanLast:'En az bir kanal açık kalmalı.',
     and:' ve ',or:' ya da ',
@@ -447,8 +463,8 @@ var T={
     empty:'Nothing in this column.',fold:'Collapse column',unfold:'Expand column',you:'you',findPerson:'Find a person',
     err:'Could not read Jira',more:'More people',rA:'Assignee',none:'empty',
     motion:'Motion',motionOn:'Turn motion off',motionOff:'Turn motion on',
-    burn:'Burndown Contribution',burnTip:'Today’s burndown contribution: the drop this person made in Remaining Estimate today.',burnRe:'Remaining Estimate changes',burnTr:'Transitions, valued from the estimate comment (for comparison)',
-    burnNone:'Nothing today.',burnErr:'Could not read burndown',burnUp:'estimate raised',burnSprint:'Sprint total',burnSprintTip:function(n,x){return n+' working days × '+x+'h'},burnLoading:'Working out the sprint…',burnLeft:function(x){return 'Done with '+x+' RE left'},
+    logged:'Logged today',loggedNone:'No time logged today.',loggedErr:'Could not read worklogs',burn:'Burndown Contribution',burnTip:'Today’s burndown contribution: the drop this person made in Remaining Estimate today.',burnRe:'Remaining Estimate changes',colTicket:'Ticket',colEst:'Estimate',colBurn:'Burn',colLog:'Logged',burnTr:'Transitions, valued from the estimate comment (for comparison)',
+    burnNone:'Nothing today.',burnErr:'Could not read burndown',burnUp:'estimate raised',burnSprint:'Sprint total',burnSprintTip:function(n,x){return n+' working days × '+x+'h'},burnLoading:'Working out the sprint…',burnLeft:function(x){return 'Done, '+x+' left'},
     reasons:{notFirst:'not the first pass',own:'own ticket',notAssignee:'not the assignee',noEstimate:'no estimate'},
     other:'Other',chan:'Channels',chanTip:function(c){return c+' show work from the selected channels.'},chanLast:'Keep at least one channel on.',
     and:' and ',or:' or ',
@@ -750,6 +766,18 @@ function getBurn(path,force,set,tries){
 }
 function loadBurn(force){return getBurn('/api/burn',force,function(j){burn=j})}
 function loadSprintBurn(force){return getBurn('/api/burn?scope=sprint',force,function(j){sprintBurn=j})}
+var logged=null,loggedFor=null;
+function loadLogged(force){if(!sel)return Promise.resolve();loggedFor=sel;return getBurn('/api/logged?person='+encodeURIComponent(sel),force,function(j){logged=j})}
+var CLOCK='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+function loggedVal(){return !logged||loggedFor!==sel||(!logged.error&&logged.person!==sel)?'…':logged.error?'–':hrs(logged.seconds/3600)}
+function loggedTop(){
+  var t=T[lang],v='…',tip=t.logged;
+  if(logged&&loggedFor===sel&&(logged.error||logged.person===sel)){
+    if(logged.error){v='–';tip=t.loggedErr+': '+logged.error}
+    else{v=hrs(logged.seconds/3600);tip=logged.items.length?logged.items.map(function(x){return x.at+'  '+x.key+'  '+hrs(x.seconds/3600)+'  '+x.summary}).join('\n'):t.loggedNone}
+  }
+  return '<div class="lgd" title="'+h(tip)+'">'+CLOCK+'<b>'+h(v)+'</b><span>'+h(t.logged)+'</span></div>';
+}
 function level(x){return x<BURNCFG.low?'low':x<BURNCFG.mid?'mid':'ok'}
 function sprintHtml(){
   var t=T[lang];
@@ -767,11 +795,9 @@ function sprintHtml(){
     days.map(function(x){return '<i class="'+(x.v?level(x.v):'')+'" style="height:'+Math.max(2,Math.round(x.v/max*40))+'px" title="'+h(x.d.toLocaleDateString(loc,{weekday:'short',day:'numeric',month:'short'})+': '+hrs(x.v))+'"><span>'+h(x.d.toLocaleDateString(loc,{weekday:'narrow'}))+'</span></i>'}).join('')+
     (target?'<b style="bottom:'+Math.round(target/max*40)+'px" aria-hidden="true"></b>':'')+'</div>';
 }
-function burnRow(e,cls,mid,val){
-  return '<tr'+(cls?' class="'+cls+'"':'')+' title="'+h(e.summary)+'"><td><a href="'+h(data.base)+'/browse/'+h(e.key)+'" target="_blank" rel="noopener">'+h(e.key)+'</a></td><td>'+mid+'</td><td>'+h(e.at)+'</td><td class="hr">'+val+'</td></tr>';
-}
 function renderBurn(){
   var t=T[lang],b=$('burn'),pop=$('bpop');
+  if(data&&loggedFor!==sel)loadLogged(false);
   $('burnl').textContent=t.burn;b.classList.remove('low','mid','ok');
   if(!data||!burn){b.innerHTML=ICON.burn+'<b>…</b>';return}
   if(burn.error){b.innerHTML=ICON.burn+'<b>–</b>';b.title=t.burnErr+': '+burn.error;pop.innerHTML='<p>'+h(b.title)+'</p>';return}
@@ -780,14 +806,27 @@ function renderBurn(){
       total=re.reduce(function(n,e){return n+Math.max(0,e.before-e.after)},0),
       trTotal=ev.reduce(function(n,e){return n+e.hours},0);
   b.classList.add(level(total));b.title=t.burn+': '+hrs(total)+(target?' / '+hrs(target):'');b.setAttribute('aria-label',b.title);
-  b.innerHTML=ICON.burn+'<b>'+h(hrs(total))+'</b>'+(target?'<small>/ '+h(hrs(target))+'</small><span class="bar" aria-hidden="true"><i style="--w:'+Math.min(100,Math.round(total/target*100))+'%"></i></span>':'');
-  var reRows=re.map(function(e){var d=e.before-e.after;
-        return burnRow(e,d>0?'':'z',h(hrs(e.before))+' → '+h(hrs(e.after))+(e.worklog?' <small>worklog</small>':''),d>0?h(hrs(d)):h(t.burnUp))})
-      .concat(left.map(function(e){return burnRow(e,'z','Done',h(t.burnLeft(hrs(e.left))))}));
-  pop.innerHTML='<p>'+h(t.burnTip)+'</p>'+sprintHtml()+
-    '<h4>'+h(t.burnRe)+'<span>'+h(hrs(total))+'</span></h4>'+(reRows.length?'<table>'+reRows.join('')+'</table>':'<p>'+h(t.burnNone)+'</p>')+
-    (!(BURNCFG.stages||[]).length?'':'<h4>'+h(t.burnTr)+'<span>'+h(hrs(trTotal))+'</span></h4>'+(ev.length?'<table>'+ev.map(function(e){
-      return burnRow(e,e.hours?'':'z',h(STAGE_NAME[e.stage]||e.stage),e.hours?h(hrs(e.hours)):h(t.reasons[e.reason]||e.reason))}).join('')+'</table>':'<p>'+h(t.burnNone)+'</p>'));
+  b.innerHTML=ICON.burn+'<b>'+h(hrs(total))+'</b>'+(target?'<small>/ '+h(hrs(target))+'</small><span class="bar" aria-hidden="true"><i style="--w:'+Math.min(100,Math.round(total/target*100))+'%"></i></span>':'')+
+    '<span class="lgb" title="'+h(t.logged)+'">'+CLOCK+'<b>'+h(loggedVal())+'</b></span>';
+  b.title+=' · '+t.logged+': '+loggedVal();b.setAttribute('aria-label',b.title);
+  var rows={},order=[];
+  function row(e){if(!rows[e.key]){rows[e.key]={key:e.key,summary:e.summary,at:e.at,re:[],tr:[],lg:0};order.push(e.key)}return rows[e.key]}
+  re.forEach(function(e){var d=e.before-e.after;row(e).re.push({t:h(hrs(e.before))+' → '+h(hrs(e.after)),v:d>0?h(hrs(d)):'<span title="'+h(t.burnUp)+'">+'+h(hrs(-d))+'</span>',z:d<=0})});
+  left.forEach(function(e){row(e).re.push({t:h(t.burnLeft(hrs(e.left))),v:'–',z:true})});
+  var lgOk=logged&&loggedFor===sel&&!logged.error&&logged.person===sel;
+  if(lgOk)logged.items.forEach(function(x){row(x).lg+=x.seconds});
+  order.sort(function(a,c){return rows[a].at<rows[c].at?-1:rows[a].at>rows[c].at?1:0});
+  var stages=(BURNCFG.stages||[]).length;
+  if(stages)ev.forEach(function(e){row(e).tr.push(e.hours?h(STAGE_NAME[e.stage]||e.stage)+' '+h(hrs(e.hours)):'<span class="z">'+h(STAGE_NAME[e.stage]||e.stage)+' · '+h(t.reasons[e.reason]||e.reason)+'</span>')});
+  var body=order.map(function(k){var r=rows[k];
+    return '<tr title="'+h(r.summary)+'"><td><a href="'+h(data.base)+'/browse/'+h(k)+'" target="_blank" rel="noopener">'+h(k)+'</a></td><td>'+h(r.at)+'</td>'+
+      '<td>'+(r.re.map(function(x){return '<span'+(x.z?' class="z"':'')+'>'+x.t+'</span>'}).join('<br>')||'<span class="z">–</span>')+'</td>'+
+      (stages?'<td>'+(r.tr.join('<br>')||'<span class="z">–</span>')+'</td>':'')+
+      '<td class="lgc">'+(r.lg?'<span class="lgp">'+CLOCK+h(hrs(r.lg/3600))+'</span>':'<span class="z">–</span>')+'</td>'+
+      '<td class="hr bc2">'+(r.re.map(function(x){return '<span'+(x.z?' class="z"':'')+'>'+x.v+'</span>'}).join('<br>')||'<span class="z">–</span>')+'</td></tr>'}).join('');
+  pop.innerHTML=loggedTop()+sprintHtml()+
+    '<h4 title="'+h(t.burnTip)+'">'+h(t.burn)+'<span>'+h(hrs(total))+(stages?' <small>· '+h(t.colEst)+' '+h(hrs(trTotal))+'</small>':'')+'</span></h4>'+
+    (order.length?'<table class="mt"><tr><th>'+h(t.colTicket)+'</th><th></th><th>RE</th>'+(stages?'<th>'+h(t.colEst)+'</th>':'')+'<th class="lgc" title="'+h(t.logged)+'">'+h(t.colLog)+'</th><th class="hr bc2">'+h(t.colBurn)+'</th></tr>'+body+'</table>':'<p>'+h(t.burnNone)+'</p>');
 }
 function renderAll(fromLoad){renderChrome();if(!data)return;renderPeople();renderHeader();renderChan();if(BURNCFG.enabled)renderBurn();renderBoard(fromLoad);buildTraffic()}
 
@@ -813,7 +852,7 @@ function applyBoard(j){
   Object.keys(hidden).forEach(function(k){if(live[k.split('|')[1]]!==hidden[k])delete hidden[k]});store.set('sfb.hidden',hidden);
 }
 function load(force){
-  if(loading||SETUP.required)return Promise.resolve();loading=true;renderChrome();if(BURNCFG.enabled){loadBurn(force);loadSprintBurn(force)}
+  if(loading||SETUP.required)return Promise.resolve();loading=true;renderChrome();if(BURNCFG.enabled){loadBurn(force);loadSprintBurn(force);loadLogged(force)}
   return fetchBoard(force,0).then(applyBoard).catch(function(e){$('errMsg').textContent=T[lang].err+': '+e.message;$('err').hidden=false})
   .then(function(){loading=false;renderAll(true)});
 }

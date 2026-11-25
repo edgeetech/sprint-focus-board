@@ -114,7 +114,8 @@ class Data:
         items = [{"field": "timeestimate", "fieldtype": "jira", "from": str(old), "to": str(new)}]
         if worklog_started:
             wid = str(9000 + len(self.worklogs))
-            self.worklogs.setdefault(key, []).append({"id": wid, "started": self.stamp(worklog_started)})
+            self.worklogs.setdefault(key, []).append({"id": wid, "started": self.stamp(worklog_started), "author": self.user(who),
+                                                     "timeSpentSeconds": max(old - new, 900)})
             items.insert(0, {"field": "WorklogId", "fieldtype": "jira", "from": None, "to": wid})
         self.remaining[key] = new
         self.change(key, when, who, *items)
@@ -198,6 +199,8 @@ class Data:
         if m:
             keys = m.group(1).split(",")
             picked = [t for t in TICKETS if t[0] in keys]
+        elif "worklogAuthor" in jql:
+            picked = [t for t in TICKETS if t[0] in self.worklogs]
         elif "statusCategory != Done" in jql:
             picked = [t for t in TICKETS if t[3] != "Done" and t[1] != "Epic"]
         else:

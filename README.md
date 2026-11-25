@@ -82,7 +82,7 @@ A team board answers "where is everything?". During the day the question is narr
 | ⊗ **Blocker** | A ticket that holds up open tickets through a Jira "Blocks" link shows a circled X with the count. Hover or click it for the waiting tickets, each one a link to Jira. Blockers sort first within their priority. |
 | 🏷️ **Channel chips** | Optional team streams, defined by epics, label and component glob patterns, and a summary regex. Hidden when none are configured. |
 | 📋 **Prompt per card** | Per-column templates with `{key}`, `{summary}`, `{url}`, `{status}` and more, in one language or per language. Neutral defaults; bring your own workflow. |
-| 🔥 **Burndown contribution** | Today's Remaining Estimate drop against a daily target, a sprint-to-date chart, and every change behind both. |
+| 🔥 **Burndown contribution** | Today's Remaining Estimate drop against a daily target and the time logged today, a sprint-to-date chart, and one row per ticket behind both. |
 | 🗂️ **Board hygiene** | Search (`/`), hide a card until its status changes, fold columns, empty columns fold themselves. Choices are remembered per browser. |
 | 🎬 **Refresh show** | A worker rummages through a Jira crate while the data loads, then throws each card into its column. Follows the OS "reduce motion" setting; the Motion button overrides it. |
 | 🧙 **Setup wizard** | Opens on the first start and from **Settings**: pick the board's active sprint, build the team by searching Jira, define channels from the sprint's epics, labels, components and title keywords with live match counts, rewrite the column prompts (for your own commands or skills), and set the refresh rate. Saved to `settings.json` and applied without a restart. |
@@ -99,7 +99,7 @@ A team board answers "where is everything?". During the day the question is narr
 
 [![Burndown contribution popover](./docs/images/burndown.png)](./docs/images/burndown.png)
 
-<sub><b>Burndown contribution.</b> Today's total against the 6h target, the sprint-to-date chart, each Remaining Estimate change (a worklog counts at its start time), and the optional estimate-comment comparison.</sub>
+<sub><b>Burndown contribution.</b> Time logged today at the top, the sprint-to-date chart, then one row per ticket: its Remaining Estimate change (a worklog counts at its start time), the optional estimate-comment value, the time logged today and the burn.</sub>
 
 <br><br>
 

@@ -1107,6 +1107,25 @@ def burn_json(day, whole_sprint=False, force=False):
     return background(("burndown|sprint|" if whole_sprint else "burndown|") + day, compute, force)
 
 
+def logged_json(day, person_id, force=False):
+    def compute():
+        prev = (datetime.date.fromisoformat(day) - datetime.timedelta(days=1)).isoformat()
+        nxt = (datetime.date.fromisoformat(day) + datetime.timedelta(days=1)).isoformat()
+        issues = search(f'worklogAuthor = "{person_id}" AND worklogDate >= "{prev}" AND worklogDate <= "{nxt}"', "summary")
+        with concurrent.futures.ThreadPoolExecutor(JIRA_CONNECTIONS) as pool:
+            logs = list(pool.map(lambda i: paged(f"{BASE}/rest/api/3/issue/{i['key']}/worklog", "worklogs"), issues))
+        items = []
+        for issue, wls in zip(issues, logs):
+            for w in wls:
+                d, at = local_day(w["started"])
+                if (w.get("author") or {}).get("accountId") == person_id and d == day:
+                    items.append({"key": issue["key"], "summary": issue["fields"].get("summary") or "", "at": at,
+                                  "seconds": secs(w.get("timeSpentSeconds"))})
+        items.sort(key=lambda e: e["at"])
+        return {"day": day, "person": person_id, "seconds": sum(e["seconds"] for e in items), "items": items}
+    return background(f"logged|{day}|{person_id}", compute, force)
+
+
 # ---------------------------------------------------------------------------------------------
 # Page and HTTP server
 
@@ -1181,7 +1200,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send(200, page(), "text/html; charset=utf-8")
         elif url.path.startswith("/api/setup/"):
             self.send(*setup_get(url.path[len("/api/setup/"):], {k: v[0] for k, v in q.items()}), "application/json; charset=utf-8")
-        elif url.path in ("/api/board", "/api/burn") and SETUP_REQUIRED:
+        elif url.path in ("/api/board", "/api/burn", "/api/logged") and SETUP_REQUIRED:
             self.send(409, b'{"error":"Finish the setup first.","setup":true}', "application/json; charset=utf-8")
         elif url.path == "/api/board":
             self.send(*board_json(force), "application/json; charset=utf-8")
@@ -1193,6 +1212,15 @@ class Handler(BaseHTTPRequestHandler):
             if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
                 day = today()
             self.send(*burn_json(day, q.get("scope", [""])[0] == "sprint", force), "application/json; charset=utf-8")
+        elif url.path == "/api/logged":
+            person_id = q.get("person", [""])[0]
+            if not re.fullmatch(r"[A-Za-z0-9:_\-]{1,128}", person_id):
+                self.send(400, b'{"error":"A valid person is required."}', "application/json; charset=utf-8")
+                return
+            day = q.get("day", [""])[0]
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
+                day = today()
+            self.send(*logged_json(day, person_id, force), "application/json; charset=utf-8")
         elif url.path == "/icon":
             try:
                 code, body, ctype = icon(q.get("u", [""])[0])
